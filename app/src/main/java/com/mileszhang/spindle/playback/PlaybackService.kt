@@ -2,6 +2,7 @@ package com.mileszhang.spindle.playback
 
 import android.app.PendingIntent
 import android.content.Intent
+import android.util.Log
 import androidx.annotation.OptIn
 import androidx.media3.common.AudioAttributes
 import androidx.media3.common.C
@@ -83,10 +84,12 @@ class PlaybackService : MediaSessionService() {
             mediaSession: MediaSession,
             controller: MediaSession.ControllerInfo,
             mediaItems: MutableList<MediaItem>,
-        ): ListenableFuture<MutableList<MediaItem>> = Futures.immediateFuture(
-            mediaItems.map { item ->
+        ): ListenableFuture<MutableList<MediaItem>> {
+            Log.i("SpindlePlayback", "session got ${mediaItems.size} items from ${controller.packageName}")
+            val resolved = mediaItems.map { item ->
                 item.requestMetadata.mediaUri?.let { item.buildUpon().setUri(it).build() } ?: item
-            }.toMutableList(),
-        )
+            }
+            return Futures.immediateFuture(resolved.toMutableList())
+        }
     }
 }

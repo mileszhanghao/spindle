@@ -84,10 +84,11 @@ jobs:
         run: |
           python3 .github/scripts/annotate.py device.log || true
           python3 .github/scripts/annotate.py build.log || true
-          grep -iE "ExoPlayer|AudioTrack|PlaybackException|MediaSession|MediaController|FATAL|spindle" logcat.txt | grep -v TestRunner | head -40 | cut -c1-300 | sed 's/^/::warning::/' || true
+          grep -E "SpindlePlayback|AndroidRuntime" logcat.txt | head -25 | cut -c1-400 | sed 's/^/::warning::/' || true
+          grep -iE "ExoPlayer|AudioTrack|PlaybackException|MediaCodec" logcat.txt | head -15 | cut -c1-400 | sed 's/^/::warning::/' || true
       - name: Screenshot summary
         if: always()
-        run: ls -la screens || true
+        run: echo "::notice::screens captured: $(ls screens 2>/dev/null | tr '\n' ' ') tar=$(stat -c %s screens.tar 2>/dev/null)" 
       - name: Publish screenshots to the ci-screens branch
         if: always() && github.event_name == 'push'
         run: |

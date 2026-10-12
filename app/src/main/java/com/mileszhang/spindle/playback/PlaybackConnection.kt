@@ -3,6 +3,7 @@ package com.mileszhang.spindle.playback
 import android.content.ComponentName
 import android.content.Context
 import android.net.Uri
+import android.util.Log
 import androidx.media3.common.C
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
@@ -13,6 +14,7 @@ import androidx.media3.session.SessionToken
 import com.mileszhang.spindle.model.AlbumSummary
 import com.mileszhang.spindle.model.Track
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Dispatchers
@@ -34,6 +36,8 @@ import javax.inject.Singleton
  * The app's handle on [PlaybackService]: a MediaController connected on first
  * use, with the player's state mirrored into a StateFlow for Compose.
  */
+private const val TAG = "SpindlePlayback"
+
 @Singleton
 class PlaybackConnection @Inject constructor(@ApplicationContext private val context: Context) {
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
@@ -53,21 +57,21 @@ class PlaybackConnection @Inject constructor(@ApplicationContext private val con
         override fun onEvents(player: Player, events: Player.Events) = sync(player)
 
         override fun onPlayerError(error: PlaybackException) {
+            Log.e(TAG, "Player error ${error.errorCodeName}", error)
             _state.update { it.copy(error = "Couldn't play this track (${error.errorCodeName}).") }
         }
     }
 
     /** Called when the app starts, so a session that is still playing in the background shows up in the UI. */
-    fun connect() {
-        scope.launch { controller.await() }
-    }
+    fun connect() = withPlayer { Log.i(TAG, "connected to session, ${it.mediaItemCount} items") }
 
     fun playAlbum(album: AlbumSummary, tracks: List<Track>, startIndex: Int) {
-        scope.launch {
-            val player = controller.await()
+        Log.i(TAG, "playAlbum ${album.id}: ${tracks.size} tracks from $startIndex")
+        withPlayer { player ->
             player.setMediaItems(tracks.map { it.toMediaItem(album) }, startIndex, 0L)
             player.prepare()
             player.play()
+            Log.i(TAG, "sent ${player.mediaItemCount} items, playWhenReady=${player.playWhenReady}")
         }
     }
 
@@ -80,8 +84,18 @@ class PlaybackConnection @Inject constructor(@ApplicationContext private val con
     fun previous() = withPlayer { it.seekToPrevious() }
     fun clearError() = _state.update { it.copy(error = null) }
 
+    /** Runs on the connected controller; a failed connection becomes an error message instead of a silent no-op. */
     private fun withPlayer(action: (MediaController) -> Unit) {
-        scope.launch { action(controller.await()) }
+        scope.launch {
+            try {
+                action(controller.await())
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                Log.e(TAG, "Playback command failed", e)
+                _state.update { it.copy(error = "Couldn't reach the player (${e.javaClass.simpleName}).") }
+            }
+        }
     }
 
     private fun sync(player: Player) {
