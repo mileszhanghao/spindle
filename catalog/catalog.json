@@ -1,0 +1,394 @@
+{
+  "sections": [
+    {
+      "title": "Rainy Seattle mornings",
+      "albumIds": [
+        2,
+        1
+      ]
+    },
+    {
+      "title": "Late night at Suzzallo",
+      "albumIds": [
+        4,
+        3
+      ]
+    },
+    {
+      "title": "Ferry ride home",
+      "albumIds": [
+        5,
+        6,
+        1
+      ]
+    }
+  ],
+  "albums": [
+    {
+      "id": 1,
+      "title": "雨打芭蕉 · Rain on Banana Leaves",
+      "artist": "Zhang Peijian",
+      "year": 2011,
+      "coverUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/72/Hiroshige%2C_Sudden_shower_over_Shin-%C5%8Chashi_bridge_and_Atake%2C_1857.jpg/960px-Hiroshige%2C_Sudden_shower_over_Shin-%C5%8Chashi_bridge_and_Atake%2C_1857.jpg",
+      "description": "Cantonese music (廣東音樂) and erhu classics, played solo on gaohu and erhu. The title track, published in a 1917 collection, imitates rain drumming on banana leaves.",
+      "coverCredit": {
+        "author": "Utagawa Hiroshige",
+        "license": "Public domain",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Hiroshige,_Sudden_shower_over_Shin-%C5%8Chashi_bridge_and_Atake,_1857.jpg"
+      },
+      "tracks": [
+        {
+          "id": "1-1",
+          "title": "雨打芭蕉 Rain Beating on Banana Leaves",
+          "artist": "Zhang Peijian",
+          "durationMs": 254559,
+          "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/f/f3/%E9%9B%A8%E6%89%93%E8%8A%AD%E8%95%89.ogg",
+          "credit": {
+            "author": "Zhang Peijian, recorded by David290",
+            "license": "CC BY-SA 4.0",
+            "sourceUrl": "https://commons.wikimedia.org/wiki/File:%E9%9B%A8%E6%89%93%E8%8A%AD%E8%95%89.ogg"
+          }
+        },
+        {
+          "id": "1-2",
+          "title": "连环扣 Interlocking Rings",
+          "artist": "Zhang Peijian",
+          "durationMs": 225422,
+          "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/1/1d/%E8%BF%9E%E7%8E%AF%E6%89%A3.ogg",
+          "credit": {
+            "author": "Zhang Peijian, recorded by David290",
+            "license": "CC BY-SA 4.0",
+            "sourceUrl": "https://commons.wikimedia.org/wiki/File:%E8%BF%9E%E7%8E%AF%E6%89%A3.ogg"
+          }
+        },
+        {
+          "id": "1-3",
+          "title": "江河水 River Water",
+          "artist": "Zhang Peijian",
+          "durationMs": 301963,
+          "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/3/30/%E6%B1%9F%E6%B2%B3%E6%B0%B4.ogg",
+          "credit": {
+            "author": "Zhang Peijian, recorded by David290",
+            "license": "CC BY-SA 4.0",
+            "sourceUrl": "https://commons.wikimedia.org/wiki/File:%E6%B1%9F%E6%B2%B3%E6%B0%B4.ogg"
+          }
+        },
+        {
+          "id": "1-4",
+          "title": "二泉映月 The Moon Over Second Spring",
+          "artist": "Zhang Peijian",
+          "durationMs": 268143,
+          "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/f/ff/%E4%BA%8C%E6%B3%89%E6%98%A0%E6%9C%88.ogg",
+          "credit": {
+            "author": "Zhang Peijian, recorded by David290",
+            "license": "CC BY-SA 4.0",
+            "sourceUrl": "https://commons.wikimedia.org/wiki/File:%E4%BA%8C%E6%B3%89%E6%98%A0%E6%9C%88.ogg"
+          }
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Gymnopédies for a Grey Morning",
+      "artist": "Michael Laucke",
+      "year": 2001,
+      "coverUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/17/Gustave_Caillebotte_-_Paris_Street%3B_Rainy_Day_-_Google_Art_Project.jpg/960px-Gustave_Caillebotte_-_Paris_Street%3B_Rainy_Day_-_Google_Art_Project.jpg",
+      "description": "Erik Satie's three Gymnopédies arranged for guitar. Slow, a little melancholy, and exactly right for the first coffee on a drizzly Seattle morning.",
+      "coverCredit": {
+        "author": "Gustave Caillebotte",
+        "license": "Public domain",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Gustave_Caillebotte_-_Paris_Street;_Rainy_Day_-_Google_Art_Project.jpg"
+      },
+      "tracks": [
+        {
+          "id": "2-1",
+          "title": "Gymnopédie No. 1",
+          "artist": "Erik Satie, arr. Michael Laucke",
+          "durationMs": 171912,
+          "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/a/a6/Satie_Gymnopedie_No_1_performed_by_Michael_Laucke.flac",
+          "credit": {
+            "author": "Michael Laucke",
+            "license": "Public domain",
+            "sourceUrl": "https://commons.wikimedia.org/wiki/File:Satie_Gymnopedie_No_1_performed_by_Michael_Laucke.flac"
+          }
+        },
+        {
+          "id": "2-2",
+          "title": "Gymnopédie No. 2",
+          "artist": "Erik Satie, arr. Michael Laucke",
+          "durationMs": 147226,
+          "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/3/3d/Satie_Gymnopedie_No_2_performed_by_Michael_Laucke.flac",
+          "credit": {
+            "author": "Michael Laucke",
+            "license": "Public domain",
+            "sourceUrl": "https://commons.wikimedia.org/wiki/File:Satie_Gymnopedie_No_2_performed_by_Michael_Laucke.flac"
+          }
+        },
+        {
+          "id": "2-3",
+          "title": "Gymnopédie No. 3",
+          "artist": "Erik Satie, arr. Michael Laucke",
+          "durationMs": 123115,
+          "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/d/db/Satie_Gymnopedie_No_3_performed_by_Michael_Laucke.flac",
+          "credit": {
+            "author": "Michael Laucke",
+            "license": "Public domain",
+            "sourceUrl": "https://commons.wikimedia.org/wiki/File:Satie_Gymnopedie_No_3_performed_by_Michael_Laucke.flac"
+          }
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Nocturnes for the Night Owl",
+      "artist": "Frédéric Chopin",
+      "year": 2015,
+      "coverUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/01/Vincent_van_Gogh_-_Starry_Night_-_Google_Art_Project.jpg/960px-Vincent_van_Gogh_-_Starry_Night_-_Google_Art_Project.jpg",
+      "description": "Four Chopin nocturnes from Musopen's free recordings, for when it is past midnight and the problem set is still open.",
+      "coverCredit": {
+        "author": "Vincent van Gogh",
+        "license": "Public domain",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Vincent_van_Gogh_-_Starry_Night_-_Google_Art_Project.jpg"
+      },
+      "tracks": [
+        {
+          "id": "3-1",
+          "title": "Nocturne in E minor, Op. posth. 72 No. 1",
+          "artist": "Frédéric Chopin",
+          "durationMs": 272720,
+          "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/c/c2/Chopin_-_Nocturne_Op._posth._72_no._1.ogg",
+          "credit": {
+            "author": "Musopen",
+            "license": "CC0",
+            "sourceUrl": "https://commons.wikimedia.org/wiki/File:Chopin_-_Nocturne_Op._posth._72_no._1.ogg"
+          }
+        },
+        {
+          "id": "3-2",
+          "title": "Nocturne in F major, Op. 15 No. 1",
+          "artist": "Frédéric Chopin",
+          "durationMs": 305553,
+          "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/5/56/Chopin_-_Nocturne_Op._15_no._1_in_F_major.ogg",
+          "credit": {
+            "author": "Musopen",
+            "license": "CC0",
+            "sourceUrl": "https://commons.wikimedia.org/wiki/File:Chopin_-_Nocturne_Op._15_no._1_in_F_major.ogg"
+          }
+        },
+        {
+          "id": "3-3",
+          "title": "Nocturne in F-sharp major, Op. 15 No. 2",
+          "artist": "Frédéric Chopin",
+          "durationMs": 244019,
+          "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/2/29/Chopin_-_Nocturne_Op._15_no._2_in_F_sharp_major.ogg",
+          "credit": {
+            "author": "Musopen",
+            "license": "CC0",
+            "sourceUrl": "https://commons.wikimedia.org/wiki/File:Chopin_-_Nocturne_Op._15_no._2_in_F_sharp_major.ogg"
+          }
+        },
+        {
+          "id": "3-4",
+          "title": "Nocturne in F minor, Op. 55 No. 1",
+          "artist": "Frédéric Chopin",
+          "durationMs": 316699,
+          "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/2/2f/Chopin_-_Nocturne-op-55-no-1.ogg",
+          "credit": {
+            "author": "Musopen",
+            "license": "CC0",
+            "sourceUrl": "https://commons.wikimedia.org/wiki/File:Chopin_-_Nocturne-op-55-no-1.ogg"
+          }
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Aria at Closing Time",
+      "artist": "Kimiko Ishizaka",
+      "year": 2012,
+      "coverUrl": "https://upload.wikimedia.org/wikipedia/commons/8/81/Carl_Spitzweg_021-detail.jpg",
+      "description": "Selections from the Open Goldberg Variations, a crowd-funded recording released into the public domain. Library music in the best sense: it keeps you company without asking for attention.",
+      "coverCredit": {
+        "author": "Carl Spitzweg",
+        "license": "Public domain",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Carl_Spitzweg_021-detail.jpg"
+      },
+      "tracks": [
+        {
+          "id": "4-1",
+          "title": "Aria",
+          "artist": "J.S. Bach",
+          "durationMs": 299520,
+          "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/e/e6/Kimiko_Ishizaka_-_01_-_Aria.ogg",
+          "credit": {
+            "author": "Kimiko Ishizaka",
+            "license": "CC0",
+            "sourceUrl": "https://commons.wikimedia.org/wiki/File:Kimiko_Ishizaka_-_01_-_Aria.ogg"
+          }
+        },
+        {
+          "id": "4-2",
+          "title": "Variatio 1",
+          "artist": "J.S. Bach",
+          "durationMs": 115513,
+          "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/6/6c/Kimiko_Ishizaka_-_J.S._Bach-_-Open-_Goldberg_Variations%2C_BWV_988_%28Piano%29_-_02_Variatio_1_a_1_Clav.mp3",
+          "credit": {
+            "author": "Kimiko Ishizaka",
+            "license": "CC0",
+            "sourceUrl": "https://commons.wikimedia.org/wiki/File:Kimiko_Ishizaka_-_J.S._Bach-_-Open-_Goldberg_Variations,_BWV_988_(Piano)_-_02_Variatio_1_a_1_Clav.mp3"
+          }
+        },
+        {
+          "id": "4-3",
+          "title": "Variatio 2",
+          "artist": "J.S. Bach",
+          "durationMs": 123794,
+          "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/a/a9/Kimiko_Ishizaka_-_J.S._Bach-_-Open-_Goldberg_Variations%2C_BWV_988_%28Piano%29_-_03_Variatio_2_a_1_Clav.mp3",
+          "credit": {
+            "author": "Kimiko Ishizaka",
+            "license": "CC0",
+            "sourceUrl": "https://commons.wikimedia.org/wiki/File:Kimiko_Ishizaka_-_J.S._Bach-_-Open-_Goldberg_Variations,_BWV_988_(Piano)_-_03_Variatio_2_a_1_Clav.mp3"
+          }
+        },
+        {
+          "id": "4-4",
+          "title": "Variatio 4",
+          "artist": "J.S. Bach",
+          "durationMs": 68624,
+          "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/d/d3/Kimiko_Ishizaka_-_J.S._Bach-_-Open-_Goldberg_Variations%2C_BWV_988_%28Piano%29_-_05_Variatio_4_a_1_Clav.mp3",
+          "credit": {
+            "author": "Kimiko Ishizaka",
+            "license": "CC0",
+            "sourceUrl": "https://commons.wikimedia.org/wiki/File:Kimiko_Ishizaka_-_J.S._Bach-_-Open-_Goldberg_Variations,_BWV_988_(Piano)_-_05_Variatio_4_a_1_Clav.mp3"
+          }
+        },
+        {
+          "id": "4-5",
+          "title": "Variatio 30 (Quodlibet)",
+          "artist": "J.S. Bach",
+          "durationMs": 121260,
+          "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/4/42/Kimiko_Ishizaka_-_J.S._Bach-_-Open-_Goldberg_Variations%2C_BWV_988_%28Piano%29_-_30_Variatio_30_a_1_Clav._Quodlibet.mp3",
+          "credit": {
+            "author": "Kimiko Ishizaka",
+            "license": "CC0",
+            "sourceUrl": "https://commons.wikimedia.org/wiki/File:Kimiko_Ishizaka_-_J.S._Bach-_-Open-_Goldberg_Variations,_BWV_988_(Piano)_-_30_Variatio_30_a_1_Clav._Quodlibet.mp3"
+          }
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Ragtime on the Last Ferry",
+      "artist": "Scott Joplin",
+      "year": 2024,
+      "coverUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ea/Hokusai_-_Eljudo_-_The_Great_Wave_at_Kanagawa.tiff/lossy-page1-960px-Hokusai_-_Eljudo_-_The_Great_Wave_at_Kanagawa.tiff.jpg",
+      "description": "Four Joplin rags, 1907 to 1917. Bouncy enough to keep you awake on the late boat across Elliott Bay.",
+      "coverCredit": {
+        "author": "Katsushika Hokusai",
+        "license": "Public domain",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Hokusai_-_Eljudo_-_The_Great_Wave_at_Kanagawa.tiff"
+      },
+      "tracks": [
+        {
+          "id": "5-1",
+          "title": "Searchlight Rag (1907)",
+          "artist": "Scott Joplin",
+          "durationMs": 188321,
+          "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/0/00/Scott_Joplin_-_Searchlight_Rag_%281907%29.ogg",
+          "credit": {
+            "author": "Gnissah",
+            "license": "Public domain",
+            "sourceUrl": "https://commons.wikimedia.org/wiki/File:Scott_Joplin_-_Searchlight_Rag_(1907).ogg"
+          }
+        },
+        {
+          "id": "5-2",
+          "title": "Sensation Rag (1908)",
+          "artist": "Scott Joplin",
+          "durationMs": 159550,
+          "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/e/ee/Scott_Joplin_-_Sensation_Rag_%281908%29.ogg",
+          "credit": {
+            "author": "Gnissah",
+            "license": "Public domain",
+            "sourceUrl": "https://commons.wikimedia.org/wiki/File:Scott_Joplin_-_Sensation_Rag_(1908).ogg"
+          }
+        },
+        {
+          "id": "5-3",
+          "title": "Felicity Rag (1911)",
+          "artist": "Scott Joplin",
+          "durationMs": 182220,
+          "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/e/e4/Scott_Joplin_-_Felicity_Rag_%281911%29.ogg",
+          "credit": {
+            "author": "Gnissah",
+            "license": "Public domain",
+            "sourceUrl": "https://commons.wikimedia.org/wiki/File:Scott_Joplin_-_Felicity_Rag_(1911).ogg"
+          }
+        },
+        {
+          "id": "5-4",
+          "title": "Reflection Rag (1917)",
+          "artist": "Scott Joplin",
+          "durationMs": 222234,
+          "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/a/a8/Scott_Joplin_-_Reflection_Rag_%281917%29.ogg",
+          "credit": {
+            "author": "Gnissah",
+            "license": "Public domain",
+            "sourceUrl": "https://commons.wikimedia.org/wiki/File:Scott_Joplin_-_Reflection_Rag_(1917).ogg"
+          }
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "title": "After Midnight, 1920",
+      "artist": "Various dance bands",
+      "year": 1924,
+      "coverUrl": "https://upload.wikimedia.org/wikipedia/commons/1/17/Lautrec_moulin_rouge%2C_la_goulue_%28poster%29_1891.jpg",
+      "description": "Dance-band 78s from 1920 to 1924, crackle included. Every recording here is old enough to be in the public domain in the US.",
+      "coverCredit": {
+        "author": "Henri de Toulouse-Lautrec",
+        "license": "Public domain",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Lautrec_moulin_rouge,_la_goulue_(poster)_1891.jpg"
+      },
+      "tracks": [
+        {
+          "id": "6-1",
+          "title": "The Japanese Sandman (1920)",
+          "artist": "Harry Raderman's Novelty Orchestra",
+          "durationMs": 200461,
+          "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/7/71/%22The_Japanese_Sandman%22_%281920%29_1920s_dance_band_music_for_flappers_Harry_Raderman%27s_Novelty_Orchestra.opus",
+          "credit": {
+            "author": "Harry Raderman's Novelty Orchestra",
+            "license": "Public domain",
+            "sourceUrl": "https://commons.wikimedia.org/wiki/File:%22The_Japanese_Sandman%22_(1920)_1920s_dance_band_music_for_flappers_Harry_Raderman's_Novelty_Orchestra.opus"
+          }
+        },
+        {
+          "id": "6-2",
+          "title": "Margie (1921)",
+          "artist": "Gene Rodemich's Orchestra",
+          "durationMs": 206541,
+          "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/f/f1/%22Margie%22_%281921%29%2C_performed_by_Gene_Rodemich%27s_Orchestra.oga",
+          "credit": {
+            "author": "Gene Rodemich's Orchestra",
+            "license": "Public domain",
+            "sourceUrl": "https://commons.wikimedia.org/wiki/File:%22Margie%22_(1921),_performed_by_Gene_Rodemich's_Orchestra.oga"
+          }
+        },
+        {
+          "id": "6-3",
+          "title": "Riverboat Shuffle (1924)",
+          "artist": "Bix Beiderbecke & The Wolverines",
+          "durationMs": 152091,
+          "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/3/31/Riverboat_Shuffle_-_Bix_Beiderbecke_%26_Wolverine_Orchestra_%281924%29.ogg",
+          "credit": {
+            "author": "Bix Beiderbecke & Wolverine Orchestra",
+            "license": "Public domain",
+            "sourceUrl": "https://commons.wikimedia.org/wiki/File:Riverboat_Shuffle_-_Bix_Beiderbecke_%26_Wolverine_Orchestra_(1924).ogg"
+          }
+        }
+      ]
+    }
+  ]
+}
