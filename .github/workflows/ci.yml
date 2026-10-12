@@ -71,6 +71,8 @@ jobs:
           api-level: 34
           arch: x86_64
           target: google_apis
+          profile: pixel_6 # 1080x2400; the runner's default device is a 320x640 screen
+          ram-size: 4096M
           disable-animations: true
           # The default options include -noaudio, which leaves ExoPlayer without an audio output.
           emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -no-boot-anim -camera-back none
