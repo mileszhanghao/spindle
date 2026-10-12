@@ -8,7 +8,10 @@ import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollTo
+import androidx.compose.ui.test.printToString
 import androidx.media3.session.MediaController
 import androidx.media3.session.SessionToken
 import com.mileszhang.spindle.playback.PlaybackService
@@ -42,7 +45,7 @@ class SmokeTest {
         settle()
         screenshot("2-album")
 
-        compose.onNodeWithText("Play").performClick()
+        compose.onNodeWithText("Play").performScrollTo().performClick()
         try {
             compose.waitUntilAtLeastOneExists(hasContentDescription("Pause"), timeoutMillis = 45_000)
         } catch (e: Throwable) {
@@ -50,7 +53,8 @@ class SmokeTest {
             // Surface the player's own error message (shown in a snackbar) in the test failure.
             val shown = compose.onAllNodes(hasText("Couldn't play", substring = true)).fetchSemanticsNodes()
                 .flatMap { node -> node.config.getOrElse(androidx.compose.ui.semantics.SemanticsProperties.Text) { emptyList() } }
-            throw AssertionError("Playback did not start. UI said: ${shown.joinToString().ifEmpty { "nothing" }}. Session: ${sessionState()}", e)
+            val tree = compose.onRoot().printToString(maxDepth = 6).take(2500)
+            throw AssertionError("Playback did not start. UI said: ${shown.joinToString().ifEmpty { "nothing" }}. Session: ${sessionState()}\nUI tree:\n$tree", e)
         }
         Thread.sleep(4_000) // let the record turn a little
         compose.waitForIdle()
