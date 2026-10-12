@@ -34,6 +34,11 @@ jobs:
           cp -r site/. _site/
           cp -r server/build/static-api _site/api
           cp app/build/outputs/apk/release/app-release.apk _site/spindle.apk
+      - name: Add screenshots from the emulator test
+        run: |
+          mkdir -p _site/screens
+          git fetch --depth=1 origin ci-screens && git archive FETCH_HEAD -- '*.png' | tar -x -C _site/screens || echo "no screenshots yet"
+          ls _site/screens
       - uses: actions/upload-pages-artifact@v4
         with:
           path: _site

@@ -46,6 +46,10 @@
   .card h3 { margin:0 0 6px; font-size:16px; }
   .card p { margin:0; color:var(--muted); font-size:14px; }
   footer { color:var(--muted); font-size:13px; padding:40px 0 56px; }
+  .shots { display:grid; grid-auto-flow:column; grid-auto-columns:minmax(180px,240px); gap:16px; overflow-x:auto; padding-bottom:8px; }
+  .shots figure { margin:0; }
+  .shots img { width:100%; border-radius:18px; border:1px solid var(--line); display:block; }
+  .shots figcaption { color:var(--muted); font-size:13px; margin-top:6px; }
 </style>
 </head>
 <body>
@@ -62,6 +66,12 @@
     </div>
     <div class="disc" id="disc" role="img" aria-label="Spinning record"></div>
   </header>
+
+  <section id="shots" hidden aria-label="Screenshots of the app">
+    <h2>The app</h2>
+    <div class="shots"></div>
+    <p class="muted">Captured on an Android emulator by the CI test that browses, plays and favorites an album.</p>
+  </section>
 
   <main id="feed" aria-live="polite"><p class="muted">Loading the catalog…</p></main>
 
@@ -133,6 +143,21 @@ function play(tracks, album, i) {
 }
 
 load();
+
+// Screenshots exist once the emulator test has run on CI; show whichever loaded.
+const shots = [['1-home','Home'],['2-album','Album page'],['3-playing','Playing, with the record spinning'],['4-favorites','Favorites']];
+const shotsEl = document.querySelector('#shots .shots');
+let loaded = 0;
+shots.forEach(([file, caption]) => {
+  const fig = document.createElement('figure');
+  const img = new Image();
+  img.alt = caption; img.loading = 'lazy'; img.src = `screens/${file}.png`;
+  img.onload = () => { loaded++; document.getElementById('shots').hidden = false; };
+  img.onerror = () => fig.remove();
+  fig.append(img);
+  const cap = document.createElement('figcaption'); cap.textContent = caption; fig.append(cap);
+  shotsEl.append(fig);
+});
 </script>
 </body>
 </html>
