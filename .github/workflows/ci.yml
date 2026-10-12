@@ -41,6 +41,8 @@ jobs:
           if-no-files-found: ignore
 
   device:
+    permissions:
+      contents: write # pushes screenshots to the ci-screens branch
     # Runs the app on an Android emulator against the local Ktor server and the
     # real Wikimedia media, and keeps screenshots of each step.
     runs-on: ubuntu-latest
@@ -74,7 +76,7 @@ jobs:
           emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -no-boot-anim -camera-back none
           script: |
             ./gradlew --no-daemon :app:connectedDebugAndroidTest -Pspindle.apiBaseUrl=http://10.0.2.2:8080/api/ > device.log 2>&1; echo $? > device.status
-            adb pull /sdcard/Android/data/com.mileszhang.spindle/files/screens screens || true
+            mkdir -p screens && adb exec-out run-as com.mileszhang.spindle tar -cf - -C files screens > screens.tar && tar -xf screens.tar || true
             adb logcat -d > logcat.txt || true
             exit $(cat device.status)
       - name: Annotate failures
@@ -86,9 +88,17 @@ jobs:
       - name: Screenshot summary
         if: always()
         run: ls -la screens || true
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: screens
-          path: screens
-          if-no-files-found: ignore
+      - name: Publish screenshots to the ci-screens branch
+        if: always() && github.event_name == 'push'
+        run: |
+          [ -n "$(ls screens 2>/dev/null)" ] || exit 0
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          mkdir -p /tmp/shots && cp screens/*.png /tmp/shots/
+          git fetch origin ci-screens || true
+          git checkout --orphan ci-screens-new
+          git rm -rqf . && git clean -fdq
+          cp /tmp/shots/*.png .
+          echo "Screenshots from the emulator UI test, commit ${GITHUB_SHA}" > README.md
+          git add -A && git commit -qm "Screenshots for ${GITHUB_SHA}"
+          git push -f origin HEAD:ci-screens
