@@ -38,7 +38,15 @@ class SmokeTest {
         screenshot("2-album")
 
         compose.onNodeWithText("Play").performClick()
-        compose.waitUntilAtLeastOneExists(hasContentDescription("Pause"), timeoutMillis = 45_000)
+        try {
+            compose.waitUntilAtLeastOneExists(hasContentDescription("Pause"), timeoutMillis = 45_000)
+        } catch (e: Throwable) {
+            screenshot("x-not-playing")
+            // Surface the player's own error message (shown in a snackbar) in the test failure.
+            val shown = compose.onAllNodes(hasText("Couldn't play", substring = true)).fetchSemanticsNodes()
+                .flatMap { node -> node.config.getOrElse(androidx.compose.ui.semantics.SemanticsProperties.Text) { emptyList() } }
+            throw AssertionError("Playback did not start. Player said: ${shown.joinToString().ifEmpty { "nothing" }}", e)
+        }
         Thread.sleep(4_000) // let the record turn a little
         compose.waitForIdle()
         screenshot("3-playing")
