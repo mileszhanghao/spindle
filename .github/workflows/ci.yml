@@ -88,7 +88,8 @@ jobs:
           grep -iE "ExoPlayer|AudioTrack|PlaybackException|MediaCodec" logcat.txt | head -15 | cut -c1-400 | sed 's/^/::warning::/' || true
       - name: Screenshot summary
         if: always()
-        run: echo "::notice::screens captured: $(ls screens 2>/dev/null | tr '\n' ' ') tar=$(stat -c %s screens.tar 2>/dev/null)" 
+        run: |
+          echo "::notice::screens captured: $(ls screens 2>/dev/null | tr '\n' ' ') tar=$(stat -c %s screens.tar 2>/dev/null)"
       - name: Publish screenshots to the ci-screens branch
         if: always() && github.event_name == 'push'
         run: |
