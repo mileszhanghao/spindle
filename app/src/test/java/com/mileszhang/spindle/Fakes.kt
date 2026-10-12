@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map
 
 val credit = Credit("Someone", "Public domain", "https://commons.wikimedia.org/wiki/File:X")
-fun album(id: Int) = AlbumSummary(id, "Album $id", "Artist", 1925, "https://example.org/$id.jpg", "About $id", credit)
+fun albumSummary(id: Int) = AlbumSummary(id, "Album $id", "Artist", 1925, "https://example.org/$id.jpg", "About $id", credit)
 fun track(albumId: Int, n: Int) = Track("$albumId-$n", "Track $n", "Artist", 180_000, "https://example.org/$albumId-$n.ogg", credit)
 
 class FakeCatalog : CatalogRepository {
@@ -22,10 +22,10 @@ class FakeCatalog : CatalogRepository {
     var feedCalls = 0
     override suspend fun feed(): Result<Feed> {
         feedCalls++
-        return if (failFeed) Result.failure(LoadException("offline")) else Result.success(Feed(listOf(Section("Late night", listOf(album(1), album(2))))))
+        return if (failFeed) Result.failure(LoadException("offline")) else Result.success(Feed(listOf(Section("Late night", listOf(albumSummary(1), albumSummary(2))))))
     }
     override suspend fun album(id: Int): Result<AlbumDetail> =
-        if (id == 404) Result.failure(LoadException("Not found")) else Result.success(AlbumDetail(album(id), listOf(track(id, 1), track(id, 2))))
+        if (id == 404) Result.failure(LoadException("Not found")) else Result.success(AlbumDetail(albumSummary(id), listOf(track(id, 1), track(id, 2))))
 }
 
 class FakeFavorites : FavoritesRepository {
