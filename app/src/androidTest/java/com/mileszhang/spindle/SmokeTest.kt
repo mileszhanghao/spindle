@@ -6,6 +6,7 @@ import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onRoot
@@ -40,7 +41,8 @@ class SmokeTest {
         settle()
         screenshot("1-home")
 
-        compose.onNodeWithText("Rain on Banana Leaves", substring = true).performClick()
+        // The album is in two sections; open the first one.
+        compose.onAllNodesWithText("Rain on Banana Leaves", substring = true)[0].performClick()
         compose.waitUntilAtLeastOneExists(hasText("Play"), timeoutMillis = 20_000)
         settle()
         screenshot("2-album")
