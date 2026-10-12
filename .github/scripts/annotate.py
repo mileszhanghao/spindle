@@ -29,7 +29,7 @@ for m in re.finditer(r"^\* What went wrong:\n(.+(?:\n(?!\* Try).+){0,12})", log,
 for m in re.finditer(r"^(?:> )?(?:Could not resolve|Could not find) .+$", log, re.M):
     emit("error", m.group(0))
 
-for path in glob.glob("**/build/test-results/**/*.xml", recursive=True):
+for path in glob.glob("**/build/test-results/**/*.xml", recursive=True) + glob.glob("**/build/outputs/androidTest-results/**/*.xml", recursive=True):
     root = ET.parse(path).getroot()
     for case in root.iter("testcase"):
         for f in list(case.findall("failure")) + list(case.findall("error")):
