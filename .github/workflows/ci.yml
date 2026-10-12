@@ -75,8 +75,8 @@ jobs:
           # The default options include -noaudio, which leaves ExoPlayer without an audio output.
           emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -no-boot-anim -camera-back none
           script: |
-            ./gradlew --no-daemon :app:connectedDebugAndroidTest -Pspindle.apiBaseUrl=http://10.0.2.2:8080/api/ > device.log 2>&1; echo $? > device.status
-            mkdir -p screens && adb exec-out run-as com.mileszhang.spindle tar -cf - -C files screens > screens.tar && tar -xf screens.tar || true
+            ./gradlew --no-daemon :app:connectedDebugAndroidTest -Pspindle.apiBaseUrl=http://10.0.2.2:8080/api/ -Pandroid.injected.androidTest.leaveApksInstalledAfterRun=true > device.log 2>&1; echo $? > device.status
+            adb exec-out run-as com.mileszhang.spindle tar -cf - -C files screens > screens.tar; tar -xf screens.tar || head -c 300 screens.tar
             adb logcat -d > logcat.txt || true
             exit $(cat device.status)
       - name: Annotate failures
