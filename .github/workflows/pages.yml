@@ -1,0 +1,49 @@
+name: Deploy demo site
+
+# Publishes https://mileszhanghao.github.io/spindle/ on every push to main:
+# the listening page, the catalog API as static JSON (the app's default
+# backend), and a downloadable release APK.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: gradle/actions/setup-gradle@v4
+      - run: ./gradlew --no-daemon :server:exportStaticApi :app:assembleRelease
+      - name: Assemble site
+        run: |
+          mkdir -p _site
+          cp -r site/. _site/
+          cp -r server/build/static-api _site/api
+          cp app/build/outputs/apk/release/app-release.apk _site/spindle.apk
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
