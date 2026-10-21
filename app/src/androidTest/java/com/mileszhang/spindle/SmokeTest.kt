@@ -1,7 +1,9 @@
 package com.mileszhang.spindle
 
+import android.Manifest
 import android.content.ComponentName
 import android.graphics.Bitmap
+import android.os.Build
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
@@ -16,6 +18,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.google.common.util.concurrent.ListenableFuture
 import com.mileszhang.spindle.playback.PlaybackService
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -32,6 +35,21 @@ import java.util.concurrent.TimeUnit
 class SmokeTest {
     @get:Rule
     val compose = createAndroidComposeRule<MainActivity>()
+
+    /**
+     * The app asks for notification permission the first time music plays. The system
+     * dialog would cover the app mid-test, so grant it up front as a returning user would have.
+     */
+    @Before
+    fun grantNotifications() {
+        if (Build.VERSION.SDK_INT >= 33) {
+            val instrumentation = InstrumentationRegistry.getInstrumentation()
+            instrumentation.uiAutomation.grantRuntimePermission(
+                instrumentation.targetContext.packageName,
+                Manifest.permission.POST_NOTIFICATIONS,
+            )
+        }
+    }
 
     @Test
     fun browsePlayAndFavorite() {
