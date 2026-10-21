@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Spindle · a record player for rainy nights</title>
+<meta name="description" content="Spindle is an Android music player built with Kotlin, Jetpack Compose and Media3. Listen to its public-domain catalog here or download the APK.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<style>
+  :root { --bg:#121212; --card:#1b1b1b; --line:#2a2a2a; --text:#ededed; --muted:#a3a3a3; --amber:#f5a524; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; }
+  a { color:var(--amber); }
+  .wrap { max-width:1040px; margin:0 auto; padding:0 16px; }
+  header { padding:56px 0 24px; display:grid; grid-template-columns:1fr auto; gap:32px; align-items:center; }
+  h1 { font:700 clamp(40px,7vw,64px)/1.05 Georgia,serif; margin:0 0 12px; }
+  .lede { color:var(--muted); max-width:560px; margin:0 0 20px; }
+  .actions { display:flex; gap:12px; flex-wrap:wrap; }
+  .btn { display:inline-flex; align-items:center; gap:8px; padding:10px 16px; border-radius:999px; border:1px solid var(--line); color:var(--text); text-decoration:none; font-weight:600; }
+  .btn.primary { background:var(--amber); color:#1a1200; border-color:var(--amber); }
+  .disc { width:200px; height:200px; border-radius:50%; background:repeating-radial-gradient(circle,#0b0b0b 0 3px,#1c1c1c 3px 4px); position:relative; box-shadow:0 10px 40px #0008; }
+  .disc::after { content:""; position:absolute; inset:34%; border-radius:50%; background:var(--amber) center/cover; background-image:var(--label, none); }
+  .spin { animation:spin 8s linear infinite; }
+  @keyframes spin { to { transform:rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce) { .spin { animation:none; } }
+  @media (max-width:640px) { header { grid-template-columns:1fr; } .disc { width:140px; height:140px; } }
+  h2 { font:700 22px/1.3 Georgia,serif; margin:36px 0 14px; }
+  .row { display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:16px; }
+  .album { background:none; border:0; padding:0; text-align:left; color:inherit; cursor:pointer; font:inherit; }
+  .album img { width:100%; aspect-ratio:1; object-fit:cover; border-radius:10px; display:block; background:var(--card); }
+  .album strong { display:block; margin-top:8px; font-size:15px; }
+  .album span { color:var(--muted); font-size:13px; }
+  .album[aria-pressed="true"] img { outline:2px solid var(--amber); outline-offset:2px; }
+  #detail { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:20px; margin-top:32px; }
+  #detail[hidden] { display:none; }
+  .tracks { list-style:none; padding:0; margin:12px 0 0; }
+  .tracks button { width:100%; display:grid; grid-template-columns:28px 1fr auto; gap:10px; padding:10px 8px; background:none; border:0; border-radius:8px; color:inherit; font:inherit; text-align:left; cursor:pointer; }
+  .tracks button:hover { background:#232323; }
+  .tracks .now { color:var(--amber); }
+  .muted { color:var(--muted); font-size:13px; }
+  audio { width:100%; margin-top:12px; }
+  .credits { font-size:12px; color:var(--muted); margin-top:14px; }
+  .credits a { color:var(--muted); }
+  section.how { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:16px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:16px; }
+  .card h3 { margin:0 0 6px; font-size:16px; }
+  .card p { margin:0; color:var(--muted); font-size:14px; }
+  footer { color:var(--muted); font-size:13px; padding:40px 0 56px; }
+  .shots { display:grid; grid-auto-flow:column; grid-auto-columns:minmax(180px,240px); gap:16px; overflow-x:auto; padding-bottom:8px; }
+  .shots figure { margin:0; }
+  .shots img { width:100%; border-radius:18px; border:1px solid var(--line); display:block; }
+  .shots figcaption { color:var(--muted); font-size:13px; margin-top:6px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <h1>Spindle</h1>
+      <p class="lede">An Android record player for rainy nights, with Cantonese gaohu, Satie on guitar, Chopin after midnight and ragtime for the last ferry. Built with Kotlin, Jetpack Compose and Media3. Every track is public domain or Creative Commons.</p>
+      <div class="actions">
+        <a class="btn primary" href="spindle.apk" download>Download the APK</a>
+        <a class="btn" href="https://github.com/mileszhanghao/spindle">Source on GitHub</a>
+      </div>
+      <p class="muted">The APK installs on Android 8.0 or newer (allow installs from your browser when asked). Or listen right here: this page plays the same catalog the app uses.</p>
+    </div>
+    <div class="disc" id="disc" role="img" aria-label="Spinning record"></div>
+  </header>
+
+  <section id="shots" hidden aria-label="Screenshots of the app">
+    <h2>The app</h2>
+    <div class="shots"></div>
+    <p class="muted">Captured on an Android emulator by the CI test that browses, plays and favorites an album.</p>
+  </section>
+
+  <main id="feed" aria-live="polite"><p class="muted">Loading the catalog…</p></main>
+
+  <section id="detail" hidden aria-label="Album"></section>
+
+  <h2>What the app does</h2>
+  <section class="how">
+    <div class="card"><h3>Plays in the background</h3><p>A Media3 MediaSessionService keeps music going with the screen off, with notification, lock-screen and headphone controls, and handles audio focus.</p></div>
+    <div class="card"><h3>A turntable on the album page</h3><p>The cover spins as a record while its album plays and stops where it is when you pause.</p></div>
+    <div class="card"><h3>Favorites, offline</h3><p>Hearted albums are stored in Room and show up even without a connection.</p></div>
+    <div class="card"><h3>One catalog, three ways</h3><p>A Ktor server, this page and the app all read the same catalog through shared Kotlin models.</p></div>
+  </section>
+
+  <footer>
+    Spindle is a portfolio project by Hao (Miles) Zhang, rebuilt from a LaiOffer course app. Album groupings are mine; recordings and cover art belong to their creators and are credited on each album.
+  </footer>
+</div>
+
+<script>
+const fmt = ms => { const s = Math.round(ms / 1000); return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); };
+const esc = s => s.replace(/[&<>"']/g, c => '&#' + c.charCodeAt(0) + ';');
+const feedEl = document.getElementById('feed'), detail = document.getElementById('detail'), disc = document.getElementById('disc');
+let audio, current;
+
+async function load() {
+  try {
+    const feed = await (await fetch('api/feed.json')).json();
+    feedEl.innerHTML = feed.sections.map(s => `
+      <h2>${esc(s.title)}</h2>
+      <div class="row">${s.albums.map(a => `
+        <button class="album" data-id="${a.id}" aria-pressed="false">
+          <img src="${a.coverUrl}" alt="" loading="lazy">
+          <strong>${esc(a.title)}</strong><span>${esc(a.artist)}</span>
+        </button>`).join('')}</div>`).join('');
+    feedEl.querySelectorAll('.album').forEach(b => b.addEventListener('click', () => openAlbum(+b.dataset.id)));
+  } catch (e) {
+    feedEl.innerHTML = '<p class="muted">Could not load the catalog.</p>';
+  }
+}
+
+async function openAlbum(id) {
+  feedEl.querySelectorAll('.album').forEach(b => b.setAttribute('aria-pressed', String(+b.dataset.id === id)));
+  const { album, tracks } = await (await fetch(`api/albums/${id}.json`)).json();
+  detail.hidden = false;
+  detail.innerHTML = `
+    <h2 style="margin-top:0">${esc(album.title)}</h2>
+    <div class="muted">${esc(album.artist)} • ${album.year}</div>
+    <p>${esc(album.description)}</p>
+    <ol class="tracks">${tracks.map((t, i) => `
+      <li><button data-i="${i}"><span>${i + 1}</span><span>${esc(t.title)}<br><span class="muted">${esc(t.artist)}</span></span><span class="muted">${fmt(t.durationMs)}</span></button></li>`).join('')}</ol>
+    <audio controls preload="none"></audio>
+    <div class="credits">Cover: <a href="${album.coverCredit.sourceUrl}">${esc(album.coverCredit.author)}, ${esc(album.coverCredit.license)}</a>.
+      Recordings: ${tracks.map((t, i) => `<a href="${t.credit.sourceUrl}">${i + 1}</a>`).join(', ')}, by ${[...new Set(tracks.map(t => `${esc(t.credit.author)} (${esc(t.credit.license)})`))].join('; ')}.</div>`;
+  audio = detail.querySelector('audio');
+  audio.addEventListener('play', () => disc.classList.add('spin'));
+  audio.addEventListener('pause', () => disc.classList.remove('spin'));
+  audio.addEventListener('ended', () => play(tracks, album, current + 1));
+  detail.querySelectorAll('.tracks button').forEach(b => b.addEventListener('click', () => play(tracks, album, +b.dataset.i)));
+  disc.style.setProperty('--label', `url("${album.coverUrl}")`);
+  detail.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function play(tracks, album, i) {
+  if (i >= tracks.length) return;
+  current = i;
+  detail.querySelectorAll('.tracks button').forEach((b, j) => b.classList.toggle('now', j === i));
+  audio.src = tracks[i].audioUrl;
+  audio.play().catch(() => {});
+}
+
+load();
+
+// Screenshots exist once the emulator test has run on CI; show whichever loaded.
+const shots = [['1-home','Home'],['2-album','Album page'],['3-playing','Playing, with the record spinning'],['4-favorites','Favorites']];
+const shotsEl = document.querySelector('#shots .shots');
+let loaded = 0;
+shots.forEach(([file, caption]) => {
+  const fig = document.createElement('figure');
+  const img = new Image();
+  img.alt = caption; img.loading = 'lazy'; img.src = `screens/${file}.png`;
+  img.onload = () => { loaded++; document.getElementById('shots').hidden = false; };
+  img.onerror = () => fig.remove();
+  fig.append(img);
+  const cap = document.createElement('figcaption'); cap.textContent = caption; fig.append(cap);
+  shotsEl.append(fig);
+});
+</script>
+</body>
+</html>
