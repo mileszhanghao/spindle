@@ -3,21 +3,19 @@ package com.mileszhang.spindle
 import android.content.ComponentName
 import android.graphics.Bitmap
 import androidx.compose.ui.test.ExperimentalTestApi
-import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
-import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
-import androidx.compose.ui.test.printToString
 import androidx.media3.session.MediaController
 import androidx.media3.session.SessionToken
-import com.mileszhang.spindle.playback.PlaybackService
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
+import com.google.common.util.concurrent.ListenableFuture
+import com.mileszhang.spindle.playback.PlaybackService
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -25,9 +23,9 @@ import java.io.File
 import java.util.concurrent.TimeUnit
 
 /**
- * End-to-end on a real emulator against the real catalog: browse, open an
- * album, play, favorite. Screenshots of each step are saved for the demo site
- * (copied out by CI with `adb exec-out run-as com.mileszhang.spindle`).
+ * End-to-end on a real emulator against the real catalog and real Wikimedia
+ * audio: browse, open an album, play, favorite. Screenshots of each step are
+ * saved for the demo site (CI copies them out with `adb exec-out run-as`).
  */
 @OptIn(ExperimentalTestApi::class)
 @RunWith(AndroidJUnit4::class)
@@ -48,45 +46,68 @@ class SmokeTest {
         screenshot("2-album")
 
         compose.onNodeWithText("Play").performScrollTo().performClick()
-        try {
-            compose.waitUntilAtLeastOneExists(hasContentDescription("Pause"), timeoutMillis = 45_000)
-        } catch (e: Throwable) {
+        // From here the UI animates without end (buffering spinner, then the turning
+        // record), so Compose never goes idle. Drive its clock by hand, and ask the
+        // media session rather than the UI whether music is playing.
+        compose.mainClock.autoAdvance = false
+        if (!waitForSession(timeoutMs = 60_000) { it.isPlaying }) {
             screenshot("x-not-playing")
-            // Surface the player's own error message (shown in a snackbar) in the test failure.
-            val shown = compose.onAllNodes(hasText("Couldn't play", substring = true)).fetchSemanticsNodes()
-                .flatMap { node -> node.config.getOrElse(androidx.compose.ui.semantics.SemanticsProperties.Text) { emptyList() } }
-            val tree = compose.onRoot().printToString(maxDepth = 6).take(2500)
-            throw AssertionError("Playback did not start. UI said: ${shown.joinToString().ifEmpty { "nothing" }}. Session: ${sessionState()}\nUI tree:\n$tree", e)
+            throw AssertionError("Playback did not start. Session: ${sessionState()}")
         }
-        Thread.sleep(4_000) // let the record turn a little
-        compose.waitForIdle()
+        compose.mainClock.advanceTimeBy(3_000) // let the record turn a little
+        Thread.sleep(1_000)
         screenshot("3-playing")
+        compose.onNodeWithContentDescription("Pause").assertExists()
 
         compose.onNodeWithContentDescription("Favorite").performClick()
         compose.onNodeWithText("Favorites").performClick()
-        compose.waitUntilAtLeastOneExists(hasText("Zhang Peijian", substring = true), timeoutMillis = 10_000)
-        settle()
+        compose.mainClock.advanceTimeBy(2_000)
+        Thread.sleep(2_000) // cover image
+        compose.mainClock.advanceTimeBy(500)
+        compose.onAllNodesWithText("Zhang Peijian", substring = true)[0].assertExists()
         screenshot("4-favorites")
     }
 
-    /** Connects a second MediaController to the app's session and describes the player. */
-    private fun sessionState(): String {
-        val ctx = InstrumentationRegistry.getInstrumentation().targetContext
-        val token = SessionToken(ctx, ComponentName(ctx, PlaybackService::class.java))
-        val future = MediaController.Builder(ctx, token).buildAsync()
-        return try {
-            val c = future.get(10, TimeUnit.SECONDS)
-            val result = arrayOfNulls<String>(1)
-            InstrumentationRegistry.getInstrumentation().runOnMainSync {
-                result[0] = "state=${c.playbackState} playWhenReady=${c.playWhenReady} items=${c.mediaItemCount} " +
-                    "current=${c.currentMediaItem?.mediaId} uri=${c.currentMediaItem?.localConfiguration?.uri} " +
-                    "error=${c.playerError?.errorCodeName}:${c.playerError?.message}:${c.playerError?.cause}"
-                c.release()
+    /** Polls the app's media session through a second controller until [done] holds or time runs out. */
+    private fun waitForSession(timeoutMs: Long, done: (MediaController) -> Boolean): Boolean {
+        val controller = connect()
+        try {
+            val deadline = System.currentTimeMillis() + timeoutMs
+            while (System.currentTimeMillis() < deadline) {
+                var ok = false
+                InstrumentationRegistry.getInstrumentation().runOnMainSync { ok = done(controller) }
+                if (ok) return true
+                Thread.sleep(500)
             }
-            result[0] ?: "unknown"
-        } catch (t: Throwable) {
-            "could not connect: $t"
+            return false
+        } finally {
+            InstrumentationRegistry.getInstrumentation().runOnMainSync { controller.release() }
         }
+    }
+
+    /** Describes the player, for failure messages. */
+    private fun sessionState(): String = try {
+        val c = connect()
+        var result = "unknown"
+        InstrumentationRegistry.getInstrumentation().runOnMainSync {
+            result = "state=${c.playbackState} playWhenReady=${c.playWhenReady} items=${c.mediaItemCount} " +
+                "current=${c.currentMediaItem?.mediaId} " +
+                "error=${c.playerError?.errorCodeName}:${c.playerError?.message}:${c.playerError?.cause}"
+            c.release()
+        }
+        result
+    } catch (t: Throwable) {
+        "could not connect: $t"
+    }
+
+    /** MediaControllers must be built on a thread with a Looper, so build on the main thread. */
+    private fun connect(): MediaController {
+        val instrumentation = InstrumentationRegistry.getInstrumentation()
+        val ctx = instrumentation.targetContext
+        val token = SessionToken(ctx, ComponentName(ctx, PlaybackService::class.java))
+        lateinit var future: ListenableFuture<MediaController>
+        instrumentation.runOnMainSync { future = MediaController.Builder(ctx, token).buildAsync() }
+        return future.get(10, TimeUnit.SECONDS)
     }
 
     /** Give cover images a moment to load before capturing. */
